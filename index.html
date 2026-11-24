@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riddhi Kedia · Análisis de Datos · Barcelona</title>
+<meta name="description" content="Análisis de datos, informes y cuadros de mando para pequeños negocios de hostelería y turismo, gestorías, consultorías y despachos de abogados en Barcelona.">
+<style>
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --text: #1d1f21;
+    --muted: #5b6167;
+    --line: #e3e3df;
+    --accent: #155e63;
+    --accent-soft: #e8f1f1;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --max: 960px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  a:hover { text-decoration-thickness: 2px; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header.top {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(250, 250, 248, 0.95);
+    border-bottom: 1px solid var(--line);
+  }
+  header.top .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; min-height: 60px; flex-wrap: wrap;
+  }
+  .brand { font-family: var(--serif); font-size: 1.1rem; color: var(--text); text-decoration: none; font-weight: 600; }
+  .brand span { color: var(--muted); font-weight: 400; }
+  nav.main { display: flex; gap: 20px; flex-wrap: wrap; }
+  nav.main a { color: var(--muted); text-decoration: none; font-size: 0.95rem; }
+  nav.main a:hover { color: var(--accent); }
+
+  /* Sections */
+  section { padding: 72px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 64px; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.25; margin: 0 0 16px; }
+  h2 { font-size: 1.9rem; }
+  h3 { font-size: 1.25rem; }
+  .eyebrow {
+    font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin: 0 0 8px;
+  }
+  .lead { font-size: 1.15rem; color: var(--muted); max-width: 680px; }
+  p { margin: 0 0 14px; max-width: 720px; }
+
+  /* Hero */
+  .hero { padding: 104px 0 96px; }
+  .hero h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 6px; }
+  .hero .sub { color: var(--muted); font-size: 1.1rem; margin-bottom: 32px; }
+  .hero .claim { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 1.9rem); max-width: 720px; margin-bottom: 16px; line-height: 1.35; }
+  .btn {
+    display: inline-block; margin-top: 16px;
+    background: var(--accent); color: #fff; text-decoration: none;
+    padding: 12px 28px; border-radius: 6px; font-weight: 600;
+  }
+  .btn:hover { background: #0f4a4e; }
+
+  /* Services */
+  .segment { margin-top: 40px; }
+  .segment-head { border-left: 3px solid var(--accent); padding-left: 14px; margin-bottom: 20px; }
+  .segment-head h3 { margin-bottom: 2px; }
+  .segment-head p { color: var(--muted); margin: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+    padding: 22px 22px 18px;
+  }
+  .card h4 { margin: 0 0 8px; font-size: 1.02rem; }
+  .card h4 .n { color: var(--accent); margin-right: 6px; }
+  .card p { margin: 0; color: var(--muted); font-size: 0.96rem; }
+
+  /* Prices */
+  .price { font-family: var(--serif); font-size: 1.9rem; color: var(--text); margin: 4px 0 10px; }
+  .price small { font-size: 1rem; color: var(--muted); font-family: var(--sans); }
+  .note { font-size: 0.92rem; color: var(--muted); margin-top: 18px; }
+
+  /* Process */
+  ol.steps { list-style: none; padding: 0; margin: 24px 0 0; counter-reset: s; display: grid; gap: 10px; max-width: 720px; }
+  ol.steps li { counter-increment: s; display: flex; gap: 14px; align-items: baseline; }
+  ol.steps li::before {
+    content: counter(s); flex: 0 0 30px; height: 30px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 0.9rem;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .highlight {
+    margin-top: 28px; background: var(--accent-soft); border-radius: 8px;
+    padding: 16px 20px; max-width: 720px; font-weight: 600; color: var(--accent);
+  }
+
+  /* About */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 24px; }
+  ul.clean { padding-left: 18px; margin: 0; }
+  ul.clean li { margin-bottom: 10px; }
+
+  /* Contact */
+  .contact-list { list-style: none; padding: 0; margin: 20px 0; }
+  .contact-list li { margin-bottom: 10px; font-size: 1.05rem; }
+  .contact-list strong { display: inline-block; min-width: 170px; }
+
+  /* Legal */
+  .legal { background: var(--surface); }
+  .legal h2 { font-size: 1.6rem; }
+  .legal h3 { font-family: var(--sans); font-size: 1rem; font-weight: 700; margin: 26px 0 8px; }
+  .legal p, .legal li { font-size: 0.95rem; max-width: 760px; }
+  .legal ul { padding-left: 20px; margin: 0 0 14px; }
+  .legal .back { font-size: 0.9rem; display: inline-block; margin-top: 18px; }
+  dl.ids { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; font-size: 0.95rem; margin: 0 0 14px; }
+  dl.ids dt { font-weight: 600; }
+  dl.ids dd { margin: 0; }
+
+  /* Footer */
+  footer { padding: 36px 0 48px; font-size: 0.9rem; color: var(--muted); }
+  footer p { max-width: none; margin-bottom: 8px; }
+  footer nav a { color: var(--muted); margin-right: 18px; }
+  footer nav a:hover { color: var(--accent); }
+
+  @media (max-width: 720px) {
+    body { font-size: 16px; }
+    section { padding: 56px 0; }
+    .hero { padding: 72px 0 64px; }
+    .about-grid { grid-template-columns: 1fr; gap: 24px; }
+    nav.main { gap: 14px; width: 100%; padding-bottom: 10px; }
+    .contact-list strong { display: block; min-width: 0; }
+    dl.ids { grid-template-columns: 1fr; gap: 0; }
+    dl.ids dd { margin-bottom: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio">Riddhi Kedia <span>· Análisis de Datos</span></a>
+    <nav class="main" aria-label="Navegación principal">
+      <a href="#servicios">Servicios</a>
+      <a href="#tarifas">Tarifas</a>
+      <a href="#como-trabajo">Cómo trabajo</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- Inicio -->
+  <section class="hero" id="inicio">
+    <div class="wrap">
+      <h1>Riddhi Kedia</h1>
+      <p class="sub">Análisis de Datos · Barcelona</p>
+      <p class="claim">Convierto los datos de su negocio en decisiones prácticas.</p>
+      <p class="lead">Análisis de datos, informes y cuadros de mando para pequeños negocios de hostelería y turismo, gestorías, consultorías y despachos de abogados.</p>
+      <a class="btn" href="#contacto">Contactar</a>
+    </div>
+  </section>
+
+  <!-- Qué hago -->
+  <section id="que-hago">
+    <div class="wrap">
+      <p class="eyebrow">Qué hago</p>
+      <h2>Datos útiles para negocios pequeños</h2>
+      <p>Los pequeños negocios generan muchos datos: ventas, reservas, opiniones de clientes, expedientes o perfiles de clientela. Sin embargo, muchas veces no pueden justificar la contratación de un profesional de datos a tiempo completo.</p>
+      <p>Ofrezco ese apoyo de forma flexible, con un análisis puntual o con un servicio mensual adaptado al tamaño de cada negocio, para que los datos se conviertan en decisiones concretas.</p>
+      <p>Trabajo principalmente en remoto. Las reuniones se hacen en las instalaciones del cliente o por videollamada.</p>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section id="servicios">
+    <div class="wrap">
+      <p class="eyebrow">Servicios</p>
+      <h2>Dos tipos de cliente, una misma necesidad</h2>
+
+      <div class="segment">
+        <div class="segment-head">
+          <h3>Hostelería y turismo</h3>
+          <p>Restaurantes y bares independientes y pequeños alojamientos.</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h4><span class="n">1</span>Análisis de opiniones y satisfacción</h4>
+            <p>Análisis de reseñas y valoraciones mediante procesamiento del lenguaje natural (NLP): temas recurrentes, puntos fuertes y débiles, y recomendaciones de mejora.</p>
+          </div>
+          <div class="card">
+            <h4><span class="n">2</span>Análisis de ventas y rentabilidad</h4>
+            <p>Patrones de venta por producto, día, franja horaria y temporada. Rentabilidad de la carta y recomendaciones sobre la oferta y los horarios de apertura.</p>
+          </div>
+          <div class="card">
+            <h4><span class="n">3</span>Segmentación de clientela</h4>
+            <p>Perfiles de clientes a partir de ventas, reservas, frecuencia de visita y gasto medio.</p>
+          </div>
+          <div class="card">
+            <h4><span class="n">4</span>Informes y cuadros de mando</h4>
+            <p>Diseño y puesta en marcha de cuadros de mando de seguimiento, con formación para su uso.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="segment">
+        <div class="segment-head">
+          <h3>Gestorías, consultorías y despachos de abogados</h3>
+          <p>Que atienden a población extranjera y a estudiantes internacionales.</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h4><span class="n">5</span>Mercado potencial por municipio</h4>
+            <p>Análisis de datos oficiales sobre población extranjera por municipio y comarca para dimensionar el mercado de un despacho.</p>
+          </div>
+          <div class="card">
+            <h4><span class="n">6</span>Segmentación por origen y trámite</h4>
+            <p>Análisis de la cartera de clientes por origen, tipo de trámite, estacionalidad y canal de captación.</p>
+          </div>
+          <div class="card">
+            <h4><span class="n">7</span>Mercado de estudiantes internacionales</h4>
+            <p>Volumen, procedencia, tendencias y estacionalidad de la demanda relacionada con estudiantes internacionales.</p>
+          </div>
+          <div class="card">
+            <h4><span class="n">8</span>Informes de inserción social y laboral</h4>
+            <p>Informes documentados, con fuentes citadas, sobre empleo, afiliación a la Seguridad Social y barreras de acceso al mercado laboral.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tarifas -->
+  <section id="tarifas">
+    <div class="wrap">
+      <p class="eyebrow">Tarifas</p>
+      <h2>Precios claros</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>Tarifa por hora</h4>
+          <p class="price">30 € <small>/hora</small></p>
+          <p>Trabajos puntuales, reuniones y asesoramiento.</p>
+        </div>
+        <div class="card">
+          <h4>Diagnóstico inicial</h4>
+          <p class="price">450 €</p>
+          <p>Unas 15 horas. Análisis puntual con informe y plan de acción.</p>
+        </div>
+        <div class="card">
+          <h4>Servicio mensual</h4>
+          <p class="price">180 € – 300 € <small>/mes</small></p>
+          <p>Entre 6 y 10 horas al mes, según el tamaño del cliente.</p>
+        </div>
+      </div>
+      <p class="note">Precios sin IVA. IVA 21 % aplicable según normativa.</p>
+    </div>
+  </section>
+
+  <!-- Cómo trabajo -->
+  <section id="como-trabajo">
+    <div class="wrap">
+      <p class="eyebrow">Cómo trabajo</p>
+      <h2>Un proceso ordenado, de principio a fin</h2>
+      <ol class="steps">
+        <li>Contacto inicial y reunión para conocer sus necesidades.</li>
+        <li>Revisión de los datos disponibles.</li>
+        <li>Propuesta con alcance, entregables, precio y calendario.</li>
+        <li>Aceptación de la propuesta y firma del contrato de encargo de tratamiento.</li>
+        <li>Preparación de los datos.</li>
+        <li>Análisis y validación.</li>
+        <li>Informe y plan de acción priorizado.</li>
+        <li>Presentación de resultados.</li>
+        <li>Puesta en marcha del cuadro de mando (si está incluido).</li>
+        <li>Seguimiento.</li>
+      </ol>
+      <p class="highlight">Todos los proyectos terminan con un plan de acción priorizado.</p>
+    </div>
+  </section>
+
+  <!-- Sobre mí -->
+  <section id="sobre-mi">
+    <div class="wrap">
+      <p class="eyebrow">Sobre mí</p>
+      <h2>Riddhi Kedia</h2>
+      <p>Soy analista de datos en Barcelona. Combino conocimientos técnicos de datos con formación en gestión empresarial para convertir los datos en decisiones prácticas.</p>
+      <div class="about-grid">
+        <div>
+          <h3>Formación</h3>
+          <ul class="clean">
+            <li>Máster en Inteligencia Artificial y Soluciones de Datos. Barcelona Technology School, acreditado por IL3 – Universitat de Barcelona (2026).</li>
+            <li>Máster en Administración y Dirección de Empresas, especialización en International Business. EAE Business School (2025).</li>
+            <li>Honours Bachelor of Science. University of Toronto (estudios de física y química).</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Herramientas</h3>
+          <ul class="clean">
+            <li>Python (Pandas, Scikit-learn)</li>
+            <li>SQL, DuckDB, dbt</li>
+            <li>Procesamiento del lenguaje natural (NLP)</li>
+            <li>Cuadros de mando: Tableau, Looker Studio</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Protección de datos -->
+  <section id="proteccion-datos">
+    <div class="wrap">
+      <p class="eyebrow">Protección de datos</p>
+      <h2>Sus datos, tratados con garantías</h2>
+      <p>Trato los datos de mis clientes con las garantías que exige la normativa de protección de datos:</p>
+      <ul class="clean">
+        <li>Firmo un contrato de encargo de tratamiento con cada cliente.</li>
+        <li>Mantengo un registro de actividades de tratamiento.</li>
+        <li>Trabajo con datos agregados o seudonimizados siempre que es posible.</li>
+        <li>Aplico medidas de seguridad: contraseñas robustas, verificación en dos pasos, dispositivos cifrados, copias de seguridad y control de accesos.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto">
+    <div class="wrap">
+      <p class="eyebrow">Contacto</p>
+      <h2>Hablemos de sus datos</h2>
+      <p>Para consultas o para solicitar una propuesta, escríbame por correo electrónico o a través de LinkedIn.</p>
+      <ul class="contact-list">
+        <li><strong>Correo electrónico</strong> <a href="mailto:riddhi997@gmail.com">riddhi997@gmail.com</a></li>
+        <li><strong>LinkedIn</strong> <a href="https://www.linkedin.com/in/rkedia97" rel="noopener noreferrer" target="_blank">linkedin.com/in/rkedia97</a></li>
+      </ul>
+      <p>Atención con cita previa. No dispongo de local abierto al público.</p>
+      <p class="note">Los datos que me envíe se tratarán según la <a href="#privacidad">Política de privacidad</a>.</p>
+    </div>
+  </section>
+
+  <!-- Aviso legal -->
+  <section class="legal" id="aviso-legal">
+    <div class="wrap">
+      <p class="eyebrow">Información legal</p>
+      <h2>Aviso legal</h2>
+
+      <h3>1. Datos identificativos</h3>
+      <p>En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI), se informa de los siguientes datos:</p>
+      <dl class="ids">
+        <dt>Titular</dt><dd>Riddhi Kedia</dd>
+        <dt>Forma jurídica</dt><dd>Trabajadora autónoma (persona física)</dd>
+        <dt>NIE (NIF)</dt><dd>Z2534189P</dd>
+        <dt>Domicilio profesional</dt><dd>Avinguda de Josep Tarradellas 40, 1º 3ª, 08029 Barcelona (no abierto al público)</dd>
+        <dt>Correo electrónico</dt><dd><a href="mailto:riddhi997@gmail.com">riddhi997@gmail.com</a></dd>
+        <dt>Actividad</dt><dd>Servicios de análisis de datos, elaboración de informes y cuadros de mando para pequeñas empresas.</dd>
+      </dl>
+      <p>El ejercicio de esta actividad no está sujeto a colegiación profesional obligatoria ni requiere título habilitante.</p>
+
+      <h3>2. Objeto</h3>
+      <p>Este sitio web informa sobre los servicios profesionales de su titular. Acceder a él otorga la condición de usuario e implica la aceptación de este aviso legal.</p>
+
+      <h3>3. Propiedad intelectual e industrial</h3>
+      <p>Los textos, el diseño y el resto de contenidos de este sitio web pertenecen a Riddhi Kedia, salvo que se indique lo contrario. Queda prohibida su reproducción, distribución o transformación sin autorización expresa, salvo para uso personal y privado.</p>
+
+      <h3>4. Responsabilidad</h3>
+      <p>El contenido de este sitio web es informativo y no constituye una oferta vinculante: los servicios se contratan únicamente mediante propuesta escrita aceptada. La titular procura que la información sea exacta y esté actualizada, pero no se responsabiliza de los errores u omisiones que pudiera contener, de las interrupciones del servicio ni del contenido de los sitios web externos enlazados.</p>
+
+      <h3>5. Legislación aplicable y jurisdicción</h3>
+      <p>Este aviso legal se rige por la legislación española. Para cualquier controversia, las partes se someten a los Juzgados y Tribunales de Barcelona, salvo que la normativa aplicable establezca otro fuero.</p>
+
+      <a class="back" href="#inicio">↑ Volver al inicio</a>
+    </div>
+  </section>
+
+  <!-- Política de privacidad -->
+  <section class="legal" id="privacidad">
+    <div class="wrap">
+      <p class="eyebrow">Información legal</p>
+      <h2>Política de privacidad</h2>
+
+      <h3>1. Responsable del tratamiento</h3>
+      <p>Riddhi Kedia · NIE Z2534189P · Avinguda de Josep Tarradellas 40, 1º 3ª, 08029 Barcelona · <a href="mailto:riddhi997@gmail.com">riddhi997@gmail.com</a></p>
+
+      <h3>2. Datos que se tratan</h3>
+      <p>Este sitio web no tiene formularios ni recoge datos de los visitantes. Solo se tratan los datos personales que usted envíe voluntariamente por correo electrónico (por ejemplo, nombre, dirección de correo, empresa y contenido del mensaje) y, si contrata algún servicio, los necesarios para gestionar la relación profesional (datos de contacto y de facturación).</p>
+
+      <h3>3. Finalidades</h3>
+      <ul>
+        <li>Responder a sus consultas y solicitudes de propuesta.</li>
+        <li>Gestionar los servicios contratados, incluida la facturación y el cumplimiento de las obligaciones legales.</li>
+      </ul>
+
+      <h3>4. Base jurídica</h3>
+      <ul>
+        <li>Consultas: su consentimiento, que presta al ponerse en contacto (art. 6.1.a RGPD).</li>
+        <li>Clientes: la ejecución del contrato o la aplicación de medidas precontractuales (art. 6.1.b RGPD) y el cumplimiento de obligaciones legales fiscales y contables (art. 6.1.c RGPD).</li>
+      </ul>
+
+      <h3>5. Plazo de conservación</h3>
+      <ul>
+        <li>Consultas que no den lugar a contratación: el tiempo necesario para responder y, como máximo, un año.</li>
+        <li>Clientes: mientras dure la relación profesional y, después, durante los plazos que exija la normativa fiscal y mercantil (con carácter general, hasta seis años).</li>
+      </ul>
+
+      <h3>6. Destinatarios</h3>
+      <p>No se ceden datos a terceros, salvo por obligación legal (por ejemplo, a la Agencia Tributaria).</p>
+      <p>Los mensajes de correo electrónico se alojan en los servidores del proveedor de correo (Google), lo que puede suponer transferencias internacionales de datos a Estados Unidos, amparadas en el Marco de Privacidad de Datos UE-EE. UU.</p>
+      <p>Este sitio web está alojado en GitHub Pages (GitHub, Inc.), que puede registrar la dirección IP de los visitantes por motivos de seguridad, conforme a su propia política de privacidad. La titular no accede a estos registros ni los utiliza.</p>
+
+      <h3>7. Sus derechos</h3>
+      <p>Puede ejercer los derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad, así como retirar su consentimiento en cualquier momento, escribiendo a <a href="mailto:riddhi997@gmail.com">riddhi997@gmail.com</a> e indicando el derecho que desea ejercer. Recibirá respuesta en el plazo máximo de un mes.</p>
+      <p>Si considera que sus derechos no se han respetado, puede presentar una reclamación ante la Agencia Española de Protección de Datos (<a href="https://www.aepd.es" rel="noopener noreferrer" target="_blank">www.aepd.es</a>).</p>
+
+      <h3>8. Datos tratados por cuenta de clientes</h3>
+      <p>Cuando, en el marco de un servicio, trato datos personales de los que es responsable un cliente (por ejemplo, datos de su clientela), actúo como encargada del tratamiento, según el contrato de encargo de tratamiento firmado con ese cliente.</p>
+
+      <h3>9. Cookies</h3>
+      <p>Este sitio web no utiliza cookies ni tecnologías similares. Tampoco usa herramientas de analítica, publicidad ni seguimiento, ni carga recursos de terceros (fuentes, mapas o vídeos). El enlace a LinkedIn lleva a un sitio externo con su propia política de privacidad y de cookies.</p>
+
+      <p class="note">Última actualización: 23 de noviembre de 2026</p>
+      <a class="back" href="#inicio">↑ Volver al inicio</a>
+    </div>
+  </section>
+
+  <!-- Condiciones de contratación -->
+  <section class="legal" id="condiciones">
+    <div class="wrap">
+      <p class="eyebrow">Información legal</p>
+      <h2>Condiciones de contratación</h2>
+
+      <h3>1. Ámbito</h3>
+      <p>Estas condiciones regulan la prestación de servicios profesionales de análisis de datos por parte de Riddhi Kedia, dirigidos a empresas y profesionales.</p>
+
+      <h3>2. Contratación</h3>
+      <p>Los servicios se contratan mediante una propuesta escrita aceptada por el cliente, que fija el alcance, los entregables, el calendario y el precio. Si la propuesta contradice estas condiciones generales, prevalece la propuesta.</p>
+
+      <h3>3. Precios</h3>
+      <p>Los precios se expresan en euros y no incluyen el IVA, que se aplicará al tipo vigente (actualmente, 21 %). Cuando el cliente sea una empresa o un profesional obligado a retener, se aplicará en factura la retención de IRPF que establezca la normativa.</p>
+
+      <h3>4. Facturación y pago</h3>
+      <ul>
+        <li>Servicio mensual: se factura mensualmente y se paga por transferencia bancaria en un plazo de 15 días desde la fecha de la factura.</li>
+        <li>Diagnósticos: puede requerirse un pago anticipado del 50 % del importe, según se indique en la propuesta.</li>
+        <li>Resto de servicios: se facturan según lo que indique la propuesta.</li>
+      </ul>
+
+      <h3>5. Duración y cancelación</h3>
+      <p>Cualquiera de las partes puede cancelar el servicio mensual por escrito (incluido el correo electrónico) con 30 días de antelación.</p>
+
+      <h3>6. Confidencialidad</h3>
+      <p>Toda la información y los datos que el cliente facilite se tratarán de forma confidencial y se usarán solo para prestar el servicio contratado.</p>
+
+      <h3>7. Protección de datos</h3>
+      <p>Si el servicio implica tratar datos personales de los que el cliente es responsable, se firmará un contrato de encargo de tratamiento antes de acceder a ellos, conforme al artículo 28 del RGPD.</p>
+
+      <h3>8. Uso de los entregables</h3>
+      <p>El cliente puede usar los informes, cuadros de mando y demás entregables para sus fines internos.</p>
+
+      <h3>9. Responsabilidad</h3>
+      <p>La responsabilidad de Riddhi Kedia se limita al importe facturado por el servicio en cuestión, salvo en caso de dolo o culpa grave.</p>
+
+      <h3>10. Legislación aplicable y jurisdicción</h3>
+      <p>Estas condiciones se rigen por la legislación española. Las partes se someten a los Juzgados y Tribunales de Barcelona.</p>
+
+      <a class="back" href="#inicio">↑ Volver al inicio</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Riddhi Kedia · NIE Z2534189P · Avinguda de Josep Tarradellas 40, 1º 3ª, 08029 Barcelona · <a href="mailto:riddhi997@gmail.com">riddhi997@gmail.com</a></p>
+    <nav aria-label="Información legal">
+      <a href="#aviso-legal">Aviso legal</a>
+      <a href="#privacidad">Política de privacidad</a>
+      <a href="#condiciones">Condiciones de contratación</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
